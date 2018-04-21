@@ -19,7 +19,7 @@ typedef struct BlockSegment{
 } BlockSegment;
 class Block {
 public:
-    Block(int xPosition,  __useconds_t stepDelay,chtype segmentChar,int screenWidth);
+    Block(int xPosition,  __useconds_t stepDelay,chtype segmentChar,int screenWidth,int screenHeight);
     ~Block();
     void start();
     bool moveBlock();
@@ -29,6 +29,7 @@ private:
     void createRandomShape();
     int xPosition;
     int screenWidth;
+    int screenHeight;
     std::vector<BlockSegment> blockSegments;
     static std::mutex mutex;
     __useconds_t stepDelay;

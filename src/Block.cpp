@@ -7,7 +7,9 @@
 
 
 
-Block::Block(int xPosition, __useconds_t stepDelay,chtype segmentChar,int screenWidth): stepDelay(stepDelay),xPosition(xPosition),segmentChar(segmentChar),screenWidth(screenWidth)
+Block::Block(int xPosition, __useconds_t stepDelay,chtype segmentChar,int screenWidth,int screenHeight): stepDelay(stepDelay),xPosition(xPosition),
+                                                                                                         segmentChar(segmentChar),screenWidth(screenWidth),
+                                                                                                         screenHeight(screenHeight)
 {
 }
 
@@ -35,7 +37,7 @@ bool Block::moveBlock() {
     for (int i=0;i<4;i++){
         mvaddch(fallingFigure[i].y,fallingFigure[i].x, ' ');
         fallingFigure[i].y++;
-        if (fallingFigure[i].y==12/2-1)
+        if (fallingFigure[i].y==screenHeight/2-1)
             return false;
         mvaddch(fallingFigure[i].y,fallingFigure[i].x, segmentChar);
     }
