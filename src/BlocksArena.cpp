@@ -2,7 +2,11 @@
 // Created by Patryk Zdral on 19.04.2018.
 //
 
+#include <ncurses.h>
+#include <cstdlib>
+#include <time.h>
 #include "BlocksArena.h"
+#include "Block.h"
 
 void BlocksArena::drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo) {
     clear();
@@ -66,5 +70,7 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
     drawDividedScreen(0, yTo, 0, xTo);
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
+    Block block(12,12);
+    block.start();
 }
 
