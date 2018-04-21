@@ -11,15 +11,15 @@
 #include <vector>
 #include <ncurses.h>
 
-struct BlockSegment {
-    int x, y;
+typedef struct BlockSegment{
+    int x;
+    int y;
     char letter;
 
-    BlockSegment(int x, int y);
-};
+} BlockSegment;
 class Block {
 public:
-    Block(int xPosition,  __useconds_t stepDelay);
+    Block(int xPosition,  __useconds_t stepDelay,chtype segmentChar,int screenWidth);
     ~Block();
     void start();
     bool moveBlock();
@@ -28,10 +28,16 @@ private:
     void initBlocks();
     void createRandomShape();
     int xPosition;
+    int screenWidth;
     std::vector<BlockSegment> blockSegments;
     static std::mutex mutex;
     __useconds_t stepDelay;
-    std::vector<std::vector<BlockSegment>> blocks;
+    const chtype segmentChar;
+    //std::vector<std::vector<BlockSegment>> blocks;
+    BlockSegment figures[7][4];
+    std::vector<BlockSegment> fallingFigure;
+    void drawFigure();
+    void initFallingFigure(int nr,int pos);
 
     //const chtype segmentChar;
 

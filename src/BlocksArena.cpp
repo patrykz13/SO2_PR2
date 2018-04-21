@@ -70,7 +70,7 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
     drawDividedScreen(0, yTo, 0, xTo);
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
-    Block block(12,12);
+    Block block(12,12,'x',xTo);
     block.start();
 }
 
