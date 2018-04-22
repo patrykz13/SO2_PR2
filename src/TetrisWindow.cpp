@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <zconf.h>
 #include "TetrisWindow.h"
 #include "Block.h"
 
@@ -19,8 +20,28 @@ TetrisWindow::TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, i
 TetrisWindow::~TetrisWindow() = default;
 
 void TetrisWindow::run() {
-    fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
-    drawFigure();
+    bool blockFalls;
+
+    while(true){
+        fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
+
+        std::unique_lock<std::mutex> uniqueLock(mutex);
+        drawFigure();
+        blockFalls = true;
+        while (blockFalls){
+            usleep(stepDelay);
+            blockFalls = doOneStep();
+            refresh();
+        }
+
+        blocks.push(fallingBlock);
+        uniqueLock.unlock();
+        condition_variable.notify_all();
+
+        int tmp = getch();
+        if (tmp == KEY_UP)
+            break;
+    }
 }
 
 std::thread TetrisWindow::startThread() {
@@ -42,6 +63,7 @@ bool TetrisWindow::doOneStep() {
 void TetrisWindow::drawFigure() {
     for (auto &blockSegment : fallingBlock.getBlockParts())
         mvaddch(blockSegment.y, blockSegment.x, 'x');
+    refresh();
 }
 
 

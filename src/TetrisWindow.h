@@ -11,15 +11,17 @@
 #include <vector>
 #include <ncurses.h>
 #include <queue>
+#include <condition_variable>
 #include "Block.h"
 #include "Window.h"
 
 
 class TetrisWindow: public IWindow {
 private:
-    static std::mutex mutex;
+    std::mutex mutex;
+    std::condition_variable condition_variable;
 
-    const std::queue<Block> &blocks;
+    std::queue<Block> blocks;
     Block fallingBlock;
 
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo;
