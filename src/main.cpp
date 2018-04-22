@@ -13,9 +13,11 @@ int main() {
     start_color();
     init_pair(1, COLOR_RED, COLOR_BLACK);
     attron(COLOR_PAIR(1));
+
     int maxHeight = 0, maxWidth = 0;
     getmaxyx(stdscr, maxHeight, maxWidth);
     BlocksArena(0, maxWidth, 0, maxHeight);
+
     nodelay(stdscr, false);
     getch();
     endwin();
