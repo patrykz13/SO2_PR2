@@ -6,7 +6,10 @@
 #define SO2_PR2_INTERCEPTINGWINDOW_H
 
 
-class InterceptingWindow {
+#include "Window.h"
+
+class InterceptingWindow: public IWindow {
+public:
 
 };
 

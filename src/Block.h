@@ -17,7 +17,6 @@ struct BlockSegment {
 class Block {
 private:
     std::vector<BlockSegment> blockParts;
-    int blockType;
 
 public:
     explicit Block();
@@ -28,7 +27,7 @@ public:
 
     const std::vector<BlockSegment> &getBlockParts() const;
 
-    int getBlockType() const;
+    void setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo);
 };
 
 

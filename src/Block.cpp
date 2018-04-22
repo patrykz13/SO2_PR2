@@ -73,8 +73,9 @@ const std::vector<BlockSegment> &Block::getBlockParts() const {
     return blockParts;
 }
 
-int Block::getBlockType() const {
-    return blockType;
+void
+Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo) {
+
 }
 
 

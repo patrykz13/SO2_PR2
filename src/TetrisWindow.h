@@ -12,9 +12,10 @@
 #include <ncurses.h>
 #include <queue>
 #include "Block.h"
+#include "Window.h"
 
 
-class TetrisWindow {
+class TetrisWindow: public IWindow {
 private:
     static std::mutex mutex;
 

@@ -7,8 +7,9 @@
 #include <ctime>
 #include "BlocksArena.h"
 #include "TetrisWindow.h"
+#include "InterceptingWindow.h"
 
-BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
+BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t stepDelay) {
     nodelay(stdscr, true);
     keypad(stdscr, true);
     noecho();
@@ -17,9 +18,21 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
+    IWindow tetrisWindow = TetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
+    IWindow firstInterceptingWindow = InterceptingWindow();
+    IWindow secondInterceptingWindow = InterceptingWindow();
+    IWindow thirdInterceptingWindow = InterceptingWindow();
 
-   // TetrisWindow block(12, 12, 'x', xTo, yTo);
-   // block.run();
+    windows.push_back(tetrisWindow);
+    windows.push_back(firstInterceptingWindow);
+    windows.push_back(secondInterceptingWindow);
+    windows.push_back(thirdInterceptingWindow);
+
+    for (auto &window : windows)
+        threadsWindows.push_back(window.startThread());
+
+    for (auto &windowThread : threadsWindows)
+        windowThread.join();
 }
 
 BlocksArena::~BlocksArena() = default;
