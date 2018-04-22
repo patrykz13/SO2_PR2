@@ -4,9 +4,24 @@
 
 #include <ncurses.h>
 #include <cstdlib>
-#include <time.h>
+#include <ctime>
 #include "BlocksArena.h"
 #include "Block.h"
+
+BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
+    nodelay(stdscr, true);
+    keypad(stdscr, true);
+    noecho();
+    curs_set(0);
+    drawDividedScreen(0, yTo, 0, xTo);
+    refresh();
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    Block block(12, 12, 'x', xTo, yTo);
+    block.start();
+}
+
+BlocksArena::~BlocksArena() = default;
 
 void BlocksArena::drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo) {
     clear();
@@ -59,20 +74,5 @@ void BlocksArena::drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo) {
     }
 
     refresh();
-
-}
-
-BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
-    nodelay(stdscr, true);
-    keypad(stdscr, true);
-    noecho();
-    curs_set(0);
-    drawDividedScreen(0, yTo, 0, xTo);
-    refresh();
-    srand(static_cast<unsigned int>(time(nullptr)));
-
-
-    Block block(12,12,'x',xTo,yTo);
-    block.start();
 }
 
