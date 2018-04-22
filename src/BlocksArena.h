@@ -7,12 +7,12 @@
 
 
 class BlocksArena {
-
     void drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo);
 
 public:
     BlocksArena(int xFrom, int xTo, int yFrom, int yTo);
 
+    virtual ~BlocksArena();
 };
 
 
