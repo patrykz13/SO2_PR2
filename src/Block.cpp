@@ -8,13 +8,13 @@
 
 BlockSegment::BlockSegment(int x, int y) : x(x), y(y) {}
 
-Block::Block(int blockType, int shift) : blockType(blockType) {
-    initBlockParts(blockType, shift);
-}
+Block::Block() = default;
 
 Block::~Block() = default;
 
 void Block::initBlockParts(int blockType, int shift) {
+    blockParts.clear();
+
     switch (blockType) {
         case 0:
             blockParts.emplace_back(1 + shift, 1);
@@ -67,6 +67,14 @@ void Block::initBlockParts(int blockType, int shift) {
         default:
             break;
     }
+}
+
+const std::vector<BlockSegment> &Block::getBlockParts() const {
+    return blockParts;
+}
+
+int Block::getBlockType() const {
+    return blockType;
 }
 
 

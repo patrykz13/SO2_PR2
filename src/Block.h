@@ -19,12 +19,16 @@ private:
     std::vector<BlockSegment> blockParts;
     int blockType;
 
-    void initBlockParts(int blockType, int shift);
-
 public:
-    explicit Block(int blockType, int shift);
+    explicit Block();
 
     virtual ~Block();
+
+    void initBlockParts(int blockType, int shift);
+
+    const std::vector<BlockSegment> &getBlockParts() const;
+
+    int getBlockType() const;
 };
 
 

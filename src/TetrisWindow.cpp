@@ -17,7 +17,7 @@ TetrisWindow::TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, i
 TetrisWindow::~TetrisWindow() = default;
 
 void TetrisWindow::run() {
-    fallingBlock = Block(rand() % 6, rand() % (areaWidthTo - 4));
+    fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
     drawFigure();
 }
 
@@ -26,7 +26,7 @@ std::thread TetrisWindow::startThread() {
 }
 
 bool TetrisWindow::doOneStep() {
-    for (auto &blockSegment: fallingBlock.blockParts) {
+    for (BlockSegment auto &blockSegment: fallingBlock.getBlockParts()) {
         mvaddch(blockSegment.y, blockSegment.x, ' ');
         blockSegment.y++;
         if (blockSegment.y == areaHeightTo - 1)
@@ -38,7 +38,7 @@ bool TetrisWindow::doOneStep() {
 }
 
 void TetrisWindow::drawFigure() {
-    for (auto &blockSegment : fallingBlock)
+    for (auto &blockSegment : fallingBlock.getBlockParts())
         mvaddch(blockSegment.y, blockSegment.x, 'x');
 }
 
