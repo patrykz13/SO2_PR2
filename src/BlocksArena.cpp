@@ -23,16 +23,19 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     IWindow secondInterceptingWindow = InterceptingWindow();
     IWindow thirdInterceptingWindow = InterceptingWindow();
 
+
     windows.push_back(tetrisWindow);
     windows.push_back(firstInterceptingWindow);
     windows.push_back(secondInterceptingWindow);
     windows.push_back(thirdInterceptingWindow);
 
+/*
     for (auto &window : windows)
         threadsWindows.push_back(window.startThread());
 
     for (auto &windowThread : threadsWindows)
         windowThread.join();
+        */
 }
 
 BlocksArena::~BlocksArena() = default;

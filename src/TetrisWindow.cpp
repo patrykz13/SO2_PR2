@@ -12,7 +12,9 @@ TetrisWindow::TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, i
                                                                        areaWidthTo(areaWidthTo),
                                                                        areaHeightFrom(areaHeightFrom),
                                                                        areaHeightTo(areaHeightTo),
-                                                                       stepDelay(stepDelay) {}
+                                                                       stepDelay(stepDelay) {
+    run();
+}
 
 TetrisWindow::~TetrisWindow() = default;
 
