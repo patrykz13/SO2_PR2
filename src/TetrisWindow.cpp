@@ -8,7 +8,7 @@
 #include "Block.h"
 
 
-TetrisWindow::TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+TetrisWindow::TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                            int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
                                                                        areaWidthTo(areaWidthTo),
                                                                        areaHeightFrom(areaHeightFrom),
@@ -31,10 +31,12 @@ void TetrisWindow::run() {
         while (blockFalls){
             usleep(stepDelay);
             blockFalls = doOneStep();
+            drawFigure();
             refresh();
         }
 
         blocks.push(fallingBlock);
+        clearFigure();
         uniqueLock.unlock();
         condition_variable.notify_all();
 
@@ -63,6 +65,12 @@ bool TetrisWindow::doOneStep() {
 void TetrisWindow::drawFigure() {
     for (auto &blockSegment : fallingBlock.getBlockParts())
         mvaddch(blockSegment.y, blockSegment.x, 'x');
+    refresh();
+}
+
+void TetrisWindow::clearFigure() {
+    for (auto &blockSegment : fallingBlock.getBlockParts())
+        mvaddch(blockSegment.y, blockSegment.x, ' ');
     refresh();
 }
 

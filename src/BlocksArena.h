@@ -10,7 +10,7 @@
 #include "Window.h"
 
 class BlocksArena {
-    const std::queue<Block> blocks;
+    std::queue<Block> blocks;
     std::vector<IWindow> windows;
     std::vector<std::thread> threadsWindows;
 

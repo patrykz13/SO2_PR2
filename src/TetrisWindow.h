@@ -31,14 +31,16 @@ private:
 
     void drawFigure();
 
+    void clearFigure();
+
+
 public:
-    TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+    TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                  int areaHeightTo, __useconds_t stepDelay);
 
     ~TetrisWindow();
 
     void run() override;
-
     std::thread startThread() override;
 };
 

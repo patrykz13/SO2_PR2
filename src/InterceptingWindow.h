@@ -7,9 +7,19 @@
 
 
 #include "Window.h"
+#include "Block.h"
+#include <queue>
 
 class InterceptingWindow: public IWindow {
+
+private:
+    int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo,windowNumber;
+    std::queue<Block> blocks;
+
 public:
+    InterceptingWindow(std::queue<Block> &blocks,int windowNumber,int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
+    void run() override;
+    std::thread startThread() override;
 
 };
 
