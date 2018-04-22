@@ -2,8 +2,8 @@
 // Created by Patryk Zdral on 19.04.2018.
 //
 
-#ifndef SO2_PR2_BLOCK_H
-#define SO2_PR2_BLOCK_H
+#ifndef SO2_PR1_TETRISWINDOW_H
+#define SO2_PR1_TETRISWINDOW_H
 
 
 #include <thread>
@@ -40,4 +40,4 @@ public:
 };
 
 
-#endif //SO2_PR2_BLOCK_H
+#endif //SO2_PR1_TETRISWINDOW_H
