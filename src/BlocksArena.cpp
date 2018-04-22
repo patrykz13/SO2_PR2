@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "BlocksArena.h"
-#include "Block.h"
+#include "TetrisWindow.h"
 
 BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
     nodelay(stdscr, true);
@@ -17,8 +17,9 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo) {
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    Block block(12, 12, 'x', xTo, yTo);
-    block.start();
+
+   // TetrisWindow block(12, 12, 'x', xTo, yTo);
+   // block.run();
 }
 
 BlocksArena::~BlocksArena() = default;

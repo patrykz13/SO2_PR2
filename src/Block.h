@@ -1,48 +1,30 @@
 //
-// Created by Patryk Zdral on 19.04.2018.
+// Created by mrfarinq on 22.04.18.
 //
 
 #ifndef SO2_PR2_BLOCK_H
 #define SO2_PR2_BLOCK_H
 
 
-#include <thread>
-#include <mutex>
 #include <vector>
-#include <ncurses.h>
 
-typedef struct BlockSegment{
-    int x;
-    int y;
-    char letter;
+struct BlockSegment {
+    int x, y;
 
-} BlockSegment;
+    BlockSegment(int x, int y);
+};
+
 class Block {
-public:
-    Block(int xPosition,  __useconds_t stepDelay,chtype segmentChar,int screenWidth,int screenHeight);
-    ~Block();
-    void start();
-    bool moveBlock();
-    std::thread startThread();
 private:
-    void initBlocks();
-    void createRandomShape();
-    int xPosition;
-    int screenWidth;
-    int screenHeight;
-    std::vector<BlockSegment> blockSegments;
-    static std::mutex mutex;
-    __useconds_t stepDelay;
-    const chtype segmentChar;
-    //std::vector<std::vector<BlockSegment>> blocks;
-    BlockSegment figures[7][4];
-    std::vector<BlockSegment> fallingFigure;
-    void drawFigure();
-    void initFallingFigure(int nr,int pos);
+    std::vector<BlockSegment> blockParts;
+    int blockType;
 
-    //const chtype segmentChar;
+    void initBlockParts(int blockType, int shift);
 
+public:
+    explicit Block(int blockType, int shift);
 
+    virtual ~Block();
 };
 
 
