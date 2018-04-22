@@ -5,15 +5,14 @@
 #include <iostream>
 #include <zconf.h>
 #include "TetrisWindow.h"
+#include "Window.h"
 #include "Block.h"
 
 
-TetrisWindow::TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
-                           int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
-                                                                       areaWidthTo(areaWidthTo),
-                                                                       areaHeightFrom(areaHeightFrom),
-                                                                       areaHeightTo(areaHeightTo),
-                                                                       stepDelay(stepDelay) {
+TetrisWindow::TetrisWindow( int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+                           int areaHeightTo, __useconds_t stepDelay) : Window(areaWidthFrom,areaWidthTo,areaHeightFrom,areaHeightTo)
+{
+    this->stepDelay=stepDelay;
     run();
 }
 
@@ -31,14 +30,17 @@ void TetrisWindow::run() {
         while (blockFalls){
             usleep(stepDelay);
             blockFalls = doOneStep();
+            drawFigure();
             refresh();
+
         }
-
-        blocks.push(fallingBlock);
+        Window::blocks.push(fallingBlock);
         uniqueLock.unlock();
+        clearWindow();
         condition_variable.notify_all();
-
+        uniqueLock.lock();
         int tmp = getch();
+        uniqueLock.unlock();
         if (tmp == KEY_UP)
             break;
     }
@@ -52,7 +54,7 @@ bool TetrisWindow::doOneStep() {
     for (auto &blockSegment: fallingBlock.getBlockParts()) {
         mvaddch(blockSegment.y, blockSegment.x, ' ');
         blockSegment.y++;
-        if (blockSegment.y == areaHeightTo - 1)
+        if (blockSegment.y == areaHeightTo-1)
             return false;
         mvaddch(blockSegment.y, blockSegment.x, 'x');
     }
@@ -63,6 +65,12 @@ bool TetrisWindow::doOneStep() {
 void TetrisWindow::drawFigure() {
     for (auto &blockSegment : fallingBlock.getBlockParts())
         mvaddch(blockSegment.y, blockSegment.x, 'x');
+    refresh();
+}
+
+void TetrisWindow::clearWindow() {
+    for (auto &blockSegment : fallingBlock.getBlockParts())
+        mvaddch(blockSegment.y, blockSegment.x, ' ');
     refresh();
 }
 

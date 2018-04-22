@@ -7,9 +7,17 @@
 
 
 #include "Window.h"
+#include <iostream>
 
-class InterceptingWindow: public IWindow {
+class InterceptingWindow: public Window {
+
 public:
+    int windowNumber;
+    InterceptingWindow(int window,int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+                                int areaHeightTo);
+private:
+    void drawFigure();
+    std::pair<int, int> randPlace(int windowNumber);
 
 };
 

@@ -6,13 +6,23 @@
 #define SO2_PR2_WINDOW_H
 
 #include <thread>
+#include "Block.h"
+#include <queue>
 
-class IWindow
+class Window
 {
+protected:
+    int areaWidthFrom;
+    int areaWidthTo;
+    int areaHeightFrom;
+    int areaHeightTo;
 public:
+    Window(int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
+    static std::queue<Block> blocks;
     virtual void run() {}
 
     virtual std::thread startThread() {};
 };
+
 
 #endif //SO2_PR2_WINDOW_H

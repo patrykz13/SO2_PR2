@@ -12,16 +12,16 @@
 #include <ncurses.h>
 #include <queue>
 #include <condition_variable>
+#include <stdint.h>
 #include "Block.h"
 #include "Window.h"
 
 
-class TetrisWindow: public IWindow {
+class TetrisWindow: public Window {
 private:
     std::mutex mutex;
     std::condition_variable condition_variable;
 
-    std::queue<Block> blocks;
     Block fallingBlock;
 
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo;
@@ -31,8 +31,10 @@ private:
 
     void drawFigure();
 
+    void clearWindow();
+
 public:
-    TetrisWindow(const std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+    TetrisWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                  int areaHeightTo, __useconds_t stepDelay);
 
     ~TetrisWindow();
