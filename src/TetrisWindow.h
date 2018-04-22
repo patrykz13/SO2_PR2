@@ -18,7 +18,7 @@ class TetrisWindow {
 private:
     static std::mutex mutex;
 
-    const std::queue<Block> &blocks;
+    const std::queue<Blocks> &blocks;
     Block fallingBlock;
 
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo;
