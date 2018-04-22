@@ -26,7 +26,7 @@ std::thread TetrisWindow::startThread() {
 }
 
 bool TetrisWindow::doOneStep() {
-    for (BlockSegment auto &blockSegment: fallingBlock.getBlockParts()) {
+    for (auto &blockSegment: fallingBlock.getBlockParts()) {
         mvaddch(blockSegment.y, blockSegment.x, ' ');
         blockSegment.y++;
         if (blockSegment.y == areaHeightTo - 1)

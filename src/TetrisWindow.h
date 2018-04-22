@@ -35,9 +35,9 @@ public:
 
     ~TetrisWindow();
 
-    void run();
+    void run() override;
 
-    std::thread startThread();
+    std::thread startThread() override;
 };
 
 

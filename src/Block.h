@@ -25,7 +25,7 @@ public:
 
     void initBlockParts(int blockType, int shift);
 
-    const std::vector<BlockSegment> &getBlockParts() const;
+    std::vector<BlockSegment> &getBlockParts();
 
     void setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo);
 };

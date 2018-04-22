@@ -69,7 +69,7 @@ void Block::initBlockParts(int blockType, int shift) {
     }
 }
 
-const std::vector<BlockSegment> &Block::getBlockParts() const {
+std::vector<BlockSegment> &Block::getBlockParts() {
     return blockParts;
 }
 
