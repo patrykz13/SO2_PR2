@@ -132,24 +132,30 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
 }
 
 void Block::drawFigure() {
-    for (auto &blockSegment : blockParts)
+    for (auto &blockSegment : blockParts) {
         mvaddch(blockSegment.y, blockSegment.x, 'x');
-    refresh();
+        refresh();
+    }
 }
 
 void Block::clearFigure() {
-    for (auto &blockSegment : blockParts)
+    for (auto &blockSegment : blockParts) {
         mvaddch(blockSegment.y, blockSegment.x, ' ');
-    refresh();
+        refresh();
+    }
 }
 
 bool Block::doOneStep(int areaHeightTo) {
     for (auto &blockSegment: blockParts) {
         mvaddch(blockSegment.y, blockSegment.x, ' ');
+        refresh();
         blockSegment.y++;
+
         if (blockSegment.y == areaHeightTo - 1)
             return false;
+
         mvaddch(blockSegment.y, blockSegment.x, 'x');
+        refresh();
     }
 
     return true;

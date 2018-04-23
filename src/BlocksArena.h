@@ -12,8 +12,6 @@
 
 
 class BlocksArena {
-    std::queue<Block> blocks;
-
     void drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo);
 
 public:

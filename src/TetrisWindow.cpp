@@ -39,7 +39,6 @@ void TetrisWindow::run() {
             uniqueLock.lock();
             blockFalls = fallingBlock.doOneStep(areaHeightTo);
             fallingBlock.drawFigure();
-            refresh();
             uniqueLock.unlock();
         }
 

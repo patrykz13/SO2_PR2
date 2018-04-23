@@ -18,16 +18,17 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    std::mutex ncursesMutex;
-    std::mutex conditionVarMutex;
-    std::condition_variable conditionVariable;
+    static std::queue<Block> blocks;
+    static std::mutex ncursesMutex;
+    static std::mutex conditionVarMutex;
+    static std::condition_variable conditionVariable;
 
     std::shared_ptr<TetrisWindow> tetrisWindow(
             new TetrisWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, xFrom, xTo / 2, yFrom, yTo / 2,
                              stepDelay));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_1(
-            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, xTo / 2, xTo - 1,
+            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2) + 1, xTo - 1,
                                    yTo / 2, yTo - 1));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_2(
@@ -35,7 +36,7 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
                                    yTo - 1));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_3(
-            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, xTo / 2, xTo - 1, yFrom,
+            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2) + 1, xTo - 1, yFrom,
                                    yTo / 2));
 
 
