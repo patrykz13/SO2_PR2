@@ -2,7 +2,22 @@
 #include <ncurses.h>
 #include "BlocksArena.h"
 
-int main() {
+int stepDelay;
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        std::cout << "Program należy uruchomić z jednym parametrem - szybkość spadania bloku." << std::endl;
+        exit(1);
+    }
+
+    try {
+        stepDelay = std::stoi(argv[1]);
+    }
+    catch (const std::invalid_argument &) {
+        std::cout << "Parametr programu musi być liczbą całkowitą." << std::endl;
+        exit(2);
+    }
+
     std::cout << "--------------------------------------------------------------------" << std::endl;
     std::cout << "Program:\n\tBlocks Threads" << std::endl;
     std::cout << "Autorzy:\n\tPatryk Zdral & Kamil Cieślik 2018" << std::endl;
@@ -16,7 +31,7 @@ int main() {
 
     int maxHeight = 0, maxWidth = 0;
     getmaxyx(stdscr, maxHeight, maxWidth);
-    BlocksArena blocksArena(0, maxWidth, 0, maxHeight, 500);
+    BlocksArena blocksArena(0, maxWidth, 0, maxHeight, static_cast<__useconds_t>(stepDelay));
 
     nodelay(stdscr, false);
     getch();
