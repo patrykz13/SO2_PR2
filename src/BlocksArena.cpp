@@ -18,10 +18,8 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
+
     TetrisWindow tetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
-
-
-
 
 
 

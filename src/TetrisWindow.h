@@ -13,9 +13,8 @@
 #include <queue>
 #include <condition_variable>
 #include "Block.h"
-#include "Window.h"
 
-class TetrisWindow: public IWindow {
+class TetrisWindow{
 private:
     static std::mutex mutex;
     std::condition_variable conditionVariable;
@@ -39,8 +38,8 @@ public:
 
     ~TetrisWindow();
 
-    void run() override;
-    std::thread startThread() override;
+    void run();
+    std::thread startThread();
 };
 
 
