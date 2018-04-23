@@ -9,10 +9,14 @@
 #include "Block.h"
 #include <queue>
 #include <thread>
+#include <condition_variable>
 
-class InterceptingWindow {
+
+class InterceptingWindow{
 
 private:
+    static std::mutex mutex;
+    static std::condition_variable condition_variable;
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo,windowNumber;
     std::queue<Block> blocks;
 
@@ -20,6 +24,7 @@ public:
     InterceptingWindow(std::queue<Block> &blocks,int windowNumber,int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
     void run();
     std::thread startThread();
+    void drawFigure(Block b);
 
 };
 

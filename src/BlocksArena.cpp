@@ -18,12 +18,20 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-
     TetrisWindow tetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
+    InterceptingWindow t1(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+    InterceptingWindow t2(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+    InterceptingWindow t3(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+
+
 
 
 
     tetrisWindow.startThread();
+    t1.startThread();
+    t2.startThread();
+    t3.startThread();
+
 }
 
 BlocksArena::~BlocksArena() = default;

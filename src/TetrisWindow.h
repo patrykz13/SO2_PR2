@@ -17,7 +17,7 @@
 class TetrisWindow{
 private:
     static std::mutex mutex;
-    std::condition_variable conditionVariable;
+    static std::condition_variable conditionVariable;
 
     std::queue<Block> blocks;
     Block fallingBlock;
