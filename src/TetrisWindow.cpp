@@ -49,11 +49,14 @@ void TetrisWindow::run() {
 
         uniqueLock.lock();
         fallingBlock.clearFigure();
-        uniqueLock.unlock();
 
         int tmp = getch();
-        if (tmp == KEY_UP)
+        uniqueLock.unlock();
+
+        if (tmp == KEY_UP){
             break;
+        }
+
     }
 }
 

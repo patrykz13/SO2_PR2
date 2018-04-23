@@ -38,11 +38,14 @@ void InterceptingWindow::run() {
 
         std::unique_lock<std::mutex> uniqueLock(ncursesMutex);
         block.drawFigure();
-        uniqueLock.unlock();
 
         int tmp = getch();
-        if (tmp == KEY_UP)
+        uniqueLock.unlock();
+
+        if (tmp == KEY_DOWN){
             break;
+        }
+
     }
 }
 
