@@ -15,13 +15,13 @@
 class InterceptingWindow{
 
 private:
-    static std::mutex mutex;
+    std::mutex& mutex;
     std::condition_variable condition_variable;
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo,windowNumber;
     std::queue<Block> blocks;
 
 public:
-    InterceptingWindow(std::queue<Block> &blocks,int windowNumber,int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
+    InterceptingWindow(std::mutex &m, std::queue<Block> &blocks,int windowNumber,int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
     void run();
     std::thread startThread();
     void drawFigure();

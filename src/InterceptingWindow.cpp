@@ -5,13 +5,9 @@
 #include <iostream>
 #include "InterceptingWindow.h"
 
-std::mutex InterceptingWindow::mutex;
-
 
 std::thread InterceptingWindow::startThread() {
-    std::thread t1(&InterceptingWindow::run, this);
-    t1.join();
-    return t1;
+    return std::thread(&InterceptingWindow::run, this);
 }
 
 void InterceptingWindow::run() {
@@ -20,15 +16,18 @@ void InterceptingWindow::run() {
     //Block b = blocks.back();
    // blocks.pop();
     while (true){
-    drawFigure();}
+        std::unique_lock<std::mutex> uniqueLock(mutex);
+    drawFigure();
+    uniqueLock.unlock();
+    }
     //uniqueLock.unlock();
 
 }
 
-InterceptingWindow::InterceptingWindow(std::queue<Block> &blocks,int windowNumber, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+InterceptingWindow::InterceptingWindow(std::mutex &m, std::queue<Block> &blocks,int windowNumber, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                                        int areaHeightTo):blocks(blocks),windowNumber(windowNumber),areaWidthFrom(areaWidthFrom),
                                                          areaWidthTo(areaWidthTo),areaHeightFrom(areaHeightFrom),
-                                                         areaHeightTo(areaHeightTo){
+                                                         areaHeightTo(areaHeightTo), mutex(m){
 
 
 }

@@ -7,15 +7,14 @@
 #include "TetrisWindow.h"
 #include "Block.h"
 
-std::mutex TetrisWindow::mutex;
 std::condition_variable TetrisWindow::conditionVariable;
 
-TetrisWindow::TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+TetrisWindow::TetrisWindow(std::mutex &m, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                            int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
                                                                        areaWidthTo(areaWidthTo),
                                                                        areaHeightFrom(areaHeightFrom),
                                                                        areaHeightTo(areaHeightTo),
-                                                                       stepDelay(stepDelay) {
+                                                                       stepDelay(stepDelay), mutex(m) {
 }
 
 TetrisWindow::~TetrisWindow() = default;
