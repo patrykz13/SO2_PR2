@@ -8,12 +8,16 @@
 #include "Block.h"
 
 
-TetrisWindow::TetrisWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
-                           int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
-                                                                       areaWidthTo(areaWidthTo),
-                                                                       areaHeightFrom(areaHeightFrom),
-                                                                       areaHeightTo(areaHeightTo),
-                                                                       stepDelay(stepDelay), mutexNcurses(m), conditionVariable(c), mutexCondition(m2)  {
+TetrisWindow::TetrisWindow(std::mutex &ncursesMutex, std::mutex &conditionVarMutex,
+                           std::condition_variable &conditionVariable, std::queue<Block> &blocks, int areaWidthFrom,
+                           int areaWidthTo, int areaHeightFrom, int areaHeightTo, __useconds_t stepDelay)
+        : blocks(blocks), areaWidthFrom(areaWidthFrom),
+          areaWidthTo(areaWidthTo),
+          areaHeightFrom(areaHeightFrom),
+          areaHeightTo(areaHeightTo),
+          stepDelay(stepDelay), ncursesMutex(ncursesMutex),
+          conditionVariable(conditionVariable),
+          conditionVarMutex(conditionVarMutex) {
 }
 
 TetrisWindow::~TetrisWindow() = default;
@@ -21,30 +25,31 @@ TetrisWindow::~TetrisWindow() = default;
 void TetrisWindow::run() {
     bool blockFalls;
 
-
     while (true) {
         fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
 
-        std::unique_lock<std::mutex> uniqueLock(mutexNcurses);
-        drawFigure();
+        std::unique_lock<std::mutex> uniqueLock(ncursesMutex);
+        fallingBlock.drawFigure();
         uniqueLock.unlock();
+
         blockFalls = true;
         while (blockFalls) {
             usleep(stepDelay);
+
             uniqueLock.lock();
-            blockFalls = doOneStep();
-            drawFigure();
+            blockFalls = fallingBlock.doOneStep(areaHeightTo);
+            fallingBlock.drawFigure();
             refresh();
             uniqueLock.unlock();
         }
 
-        std::unique_lock<std::mutex> locker(mutexCondition);
+        std::unique_lock<std::mutex> locker(conditionVarMutex);
         blocks.push(fallingBlock);
         conditionVariable.notify_all();
         locker.unlock();
 
         uniqueLock.lock();
-        clearFigure();
+        fallingBlock.clearFigure();
         uniqueLock.unlock();
 
         int tmp = getch();
@@ -55,33 +60,6 @@ void TetrisWindow::run() {
 
 std::thread TetrisWindow::startThread() {
     return std::thread(&TetrisWindow::run, this);
-    // t1.join();
-
-    // return std::thread(&TetrisWindow::start, this);
-}
-
-bool TetrisWindow::doOneStep() {
-    for (auto &blockSegment: fallingBlock.getBlockParts()) {
-        mvaddch(blockSegment.y, blockSegment.x, ' ');
-        blockSegment.y++;
-        if (blockSegment.y == areaHeightTo - 1)
-            return false;
-        mvaddch(blockSegment.y, blockSegment.x, 'x');
-    }
-
-    return true;
-}
-
-void TetrisWindow::drawFigure() {
-    for (auto &blockSegment : fallingBlock.getBlockParts())
-        mvaddch(blockSegment.y, blockSegment.x, 'x');
-    refresh();
-}
-
-void TetrisWindow::clearFigure() {
-    for (auto &blockSegment : fallingBlock.getBlockParts())
-        mvaddch(blockSegment.y, blockSegment.x, ' ');
-    refresh();
 }
 
 

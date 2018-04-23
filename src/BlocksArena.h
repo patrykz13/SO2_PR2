@@ -13,9 +13,6 @@
 
 class BlocksArena {
     std::queue<Block> blocks;
-    const std::condition_variable conditionVariable;
-
-    std::vector<std::thread> threadsWindows;
 
     void drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo);
 

@@ -12,21 +12,24 @@
 #include <condition_variable>
 
 
-class InterceptingWindow{
-
+class InterceptingWindow {
 private:
-    std::mutex& mutexNcurses;
-    std::mutex& mutexCondition;
-    std::condition_variable& condition_variable;
-    int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo,windowNumber;
-    std::queue<Block>& blocks;
+    std::queue<Block> &blocks;
+    std::mutex &ncursesMutex;
+    std::mutex &conditionVarMutex;
+    std::condition_variable &conditionVariable;
+    int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo, windowNumber;
+
+    void run();
 
 public:
-    InterceptingWindow(std::mutex &m, std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks,int areaWidthFrom,int areaWidthTo,int areaHeightFrom,int areaHeightTo);
-    void run();
-    std::thread startThread();
-    void drawFigure(Block p);
+    InterceptingWindow(std::mutex &ncursesMutex, std::mutex &conditionVarMutex,
+                       std::condition_variable &conditionVariable, std::queue<Block> &blocks,
+                       int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo);
 
+    virtual ~InterceptingWindow();
+
+    std::thread startThread();
 };
 
 

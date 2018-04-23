@@ -14,32 +14,25 @@
 #include <condition_variable>
 #include "Block.h"
 
-class TetrisWindow{
+class TetrisWindow {
 private:
-    std::mutex& mutexNcurses;
-    std::mutex& mutexCondition;
-    std::condition_variable& conditionVariable;
-
-    std::queue<Block>& blocks;
     Block fallingBlock;
-
+    std::queue<Block> &blocks;
+    std::mutex &ncursesMutex;
+    std::mutex &conditionVarMutex;
+    std::condition_variable &conditionVariable;
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo;
     __useconds_t stepDelay;
 
-    bool doOneStep();
-
-    void drawFigure();
-
-    void clearFigure();
-
+    void run();
 
 public:
-    TetrisWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+    TetrisWindow(std::mutex &ncursesMutex, std::mutex &conditionVarMutex, std::condition_variable &conditionVariable,
+                 std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                  int areaHeightTo, __useconds_t stepDelay);
 
     ~TetrisWindow();
 
-    void run();
     std::thread startThread();
 };
 

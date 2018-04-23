@@ -26,9 +26,13 @@ public:
 
     void initBlockParts(int blockType, int shift);
 
-    std::vector<BlockSegment> &getBlockParts();
-
     void setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo);
+
+    void drawFigure();
+
+    void clearFigure();
+
+    bool doOneStep(int areaHeightTo);
 };
 
 

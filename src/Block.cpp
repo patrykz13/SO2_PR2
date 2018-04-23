@@ -71,14 +71,11 @@ void Block::initBlockParts(int blockType, int shift) {
     }
 }
 
-std::vector<BlockSegment> &Block::getBlockParts() {
-    return blockParts;
-}
-
 void
 Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo) {
     blockParts.clear();
-    int shiftWidth = areaWidthFrom + rand() % (( areaWidthTo + 1 ) - areaWidthFrom), shiftHeight = areaHeightFrom + rand() % (( areaHeightTo + 1 ) - areaHeightFrom);
+    int shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 4) - areaWidthFrom);
+    int shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 3) - areaHeightFrom);
 
     switch (blockType) {
         case 0:
@@ -132,6 +129,30 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
         default:
             break;
     }
+}
+
+void Block::drawFigure() {
+    for (auto &blockSegment : blockParts)
+        mvaddch(blockSegment.y, blockSegment.x, 'x');
+    refresh();
+}
+
+void Block::clearFigure() {
+    for (auto &blockSegment : blockParts)
+        mvaddch(blockSegment.y, blockSegment.x, ' ');
+    refresh();
+}
+
+bool Block::doOneStep(int areaHeightTo) {
+    for (auto &blockSegment: blockParts) {
+        mvaddch(blockSegment.y, blockSegment.x, ' ');
+        blockSegment.y++;
+        if (blockSegment.y == areaHeightTo - 1)
+            return false;
+        mvaddch(blockSegment.y, blockSegment.x, 'x');
+    }
+
+    return true;
 }
 
 

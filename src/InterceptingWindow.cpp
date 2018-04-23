@@ -7,48 +7,43 @@
 #include <cassert>
 
 
+InterceptingWindow::InterceptingWindow(std::mutex &ncursesMutex, std::mutex &conditionVarMutex,
+                                       std::condition_variable &conditionVariable, std::queue<Block> &blocks,
+                                       int areaWidthFrom,
+                                       int areaWidthTo, int areaHeightFrom, int areaHeightTo)
+        : blocks(blocks), windowNumber(windowNumber),
+          areaWidthFrom(areaWidthFrom),
+          areaWidthTo(areaWidthTo), areaHeightFrom(areaHeightFrom),
+          areaHeightTo(areaHeightTo), ncursesMutex(ncursesMutex),
+          conditionVariable(conditionVariable),
+          conditionVarMutex(conditionVarMutex) {}
+
+InterceptingWindow::~InterceptingWindow() = default;
+
 std::thread InterceptingWindow::startThread() {
     return std::thread(&InterceptingWindow::run, this);
 }
 
 void InterceptingWindow::run() {
     while (true) {
-        std::unique_lock<std::mutex> locker(mutexCondition);
-        condition_variable.wait(locker,[this]{return !blocks.empty(); });
+        std::unique_lock<std::mutex> locker(conditionVarMutex);
+        conditionVariable.wait(locker, [this] { return !blocks.empty(); });
         assert(!blocks.empty());
-        Block b = blocks.back();
+        Block block = blocks.back();
         blocks.pop();
         locker.unlock();
-        b.setBlockPartsForInterceptingWindow(areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo);
-        std::unique_lock<std::mutex> uniqueLock(mutexNcurses);
-        drawFigure(b);
+
+        block.setBlockPartsForInterceptingWindow(areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo);
+
+        std::unique_lock<std::mutex> uniqueLock(ncursesMutex);
+        block.drawFigure();
         uniqueLock.unlock();
 
-        //condition_variable.wait(locker);
-
-
-
-
-       // int tmp = getch();
-       // if (tmp == KEY_UP)
-         //   break;
+        int tmp = getch();
+        if (tmp == KEY_UP)
+            break;
     }
 }
 
-InterceptingWindow::InterceptingWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom,
-                                       int areaWidthTo, int areaHeightFrom,
-                                       int areaHeightTo) : blocks(blocks), windowNumber(windowNumber),
-                                                           areaWidthFrom(areaWidthFrom),
-                                                           areaWidthTo(areaWidthTo), areaHeightFrom(areaHeightFrom),
-                                                           areaHeightTo(areaHeightTo), mutexNcurses(m), condition_variable(c), mutexCondition(m2) {
-
-
-}
-
-void InterceptingWindow::drawFigure(Block p) {
-    for (auto &blockSegment : p.getBlockParts())
-        mvaddch(blockSegment.y, blockSegment.x, 'x');
-    refresh();
-}
 
 
