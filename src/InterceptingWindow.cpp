@@ -11,32 +11,38 @@ std::thread InterceptingWindow::startThread() {
 }
 
 void InterceptingWindow::run() {
-    //std::unique_lock<std::mutex> uniqueLock(mutex);
-   // condition_variable.wait(uniqueLock, [&]{return !blocks.empty();});
-    //Block b = blocks.back();
-   // blocks.pop();
-    while (true){
-        std::unique_lock<std::mutex> uniqueLock(mutex);
-    drawFigure();
-    uniqueLock.unlock();
+    while (true) {
+
+        std::unique_lock<std::mutex> locker(mutexCondition);
+        condition_variable.wait(locker, [&]{return !blocks.empty();});
+        Block b = blocks.back();
+        blocks.pop();
+        locker.unlock();
+
+        b.setBlockPartsForInterceptingWindow(areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo);
+        std::unique_lock<std::mutex> uniqueLock(mutexNcurses);
+        drawFigure(b);
+        uniqueLock.unlock();
+
+        int tmp = getch();
+        if (tmp == KEY_UP)
+            break;
     }
-    //uniqueLock.unlock();
+}
+
+InterceptingWindow::InterceptingWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom,
+                                       int areaWidthTo, int areaHeightFrom,
+                                       int areaHeightTo) : blocks(blocks), windowNumber(windowNumber),
+                                                           areaWidthFrom(areaWidthFrom),
+                                                           areaWidthTo(areaWidthTo), areaHeightFrom(areaHeightFrom),
+                                                           areaHeightTo(areaHeightTo), mutexNcurses(m), condition_variable(c), mutexCondition(m2) {
+
 
 }
 
-InterceptingWindow::InterceptingWindow(std::mutex &m, std::queue<Block> &blocks,int windowNumber, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
-                                       int areaHeightTo):blocks(blocks),windowNumber(windowNumber),areaWidthFrom(areaWidthFrom),
-                                                         areaWidthTo(areaWidthTo),areaHeightFrom(areaHeightFrom),
-                                                         areaHeightTo(areaHeightTo), mutex(m){
-
-
-}
-
-void InterceptingWindow::drawFigure() {
-    mvaddch(28, 50, 'x');
-    mvaddch(21, 5, 'x');
-    mvaddch(11, 61, 'x');
-    mvaddch(15, 54, 'x');
+void InterceptingWindow::drawFigure(Block p) {
+    for (auto &blockSegment : p.getBlockParts())
+        mvaddch(blockSegment.y, blockSegment.x, 'x');
     refresh();
 }
 

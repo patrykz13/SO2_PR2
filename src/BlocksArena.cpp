@@ -18,23 +18,28 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    std::mutex mutex;
+    std::mutex mutexNcurses;
+    std::mutex mutexCondition;
+    std::condition_variable c;
 
-    std::shared_ptr<TetrisWindow> tetrisWindow(new TetrisWindow(mutex, blocks, xFrom, xTo / 2, yFrom, yTo / 2, 50000));
-    std::shared_ptr<TetrisWindow> tetrisWindow2(new TetrisWindow(mutex, blocks, xFrom, xTo / 2, yFrom, yTo / 2, 1000000));
-    std::shared_ptr<InterceptingWindow> t1(new InterceptingWindow(mutex, blocks,1, xFrom, xTo / 2, yFrom, yTo / 2));
+    std::shared_ptr<TetrisWindow> tetrisWindow(new TetrisWindow(mutexNcurses, mutexCondition, c, blocks, xFrom, xTo / 2, yFrom, yTo / 2, 50000));
+    std::shared_ptr<InterceptingWindow> t1(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xTo / 2, xTo - 1, yTo / 2, yTo - 1));
+    std::shared_ptr<InterceptingWindow> t2(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xFrom, xTo / 2, yTo / 2, yTo - 1));
+    std::shared_ptr<InterceptingWindow> t3(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xTo / 2, xTo - 1, yFrom, yTo / 2));
 
 
     std::thread th1 = tetrisWindow->startThread();
-    std::thread th2 = tetrisWindow2->startThread();
-    std::thread th3 = t1->startThread();
+    std::thread th2 = t1->startThread();
+    std::thread th3 = t2->startThread();
+    std::thread th4 = t3->startThread();
 
     th1.join();
     th2.join();
     th3.join();
-   // t1.startThread();
+    th4.join();
+    // t1.startThread();
     //t2.startThread();
-   // t3.startThread();
+    // t3.startThread();
 
 }
 

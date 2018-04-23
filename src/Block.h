@@ -16,6 +16,7 @@ struct BlockSegment {
 
 class Block {
 private:
+    int blockType;
     std::vector<BlockSegment> blockParts;
 
 public:

@@ -16,10 +16,11 @@
 
 class TetrisWindow{
 private:
-    std::mutex& mutex;
-    static std::condition_variable conditionVariable;
+    std::mutex& mutexNcurses;
+    std::mutex& mutexCondition;
+    std::condition_variable& conditionVariable;
 
-    std::queue<Block> blocks;
+    std::queue<Block>& blocks;
     Block fallingBlock;
 
     int areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo;
@@ -33,7 +34,7 @@ private:
 
 
 public:
-    TetrisWindow(std::mutex &m, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+    TetrisWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                  int areaHeightTo, __useconds_t stepDelay);
 
     ~TetrisWindow();

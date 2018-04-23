@@ -7,14 +7,13 @@
 #include "TetrisWindow.h"
 #include "Block.h"
 
-std::condition_variable TetrisWindow::conditionVariable;
 
-TetrisWindow::TetrisWindow(std::mutex &m, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
+TetrisWindow::TetrisWindow(std::mutex &m,  std::mutex &m2, std::condition_variable &c, std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                            int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
                                                                        areaWidthTo(areaWidthTo),
                                                                        areaHeightFrom(areaHeightFrom),
                                                                        areaHeightTo(areaHeightTo),
-                                                                       stepDelay(stepDelay), mutex(m) {
+                                                                       stepDelay(stepDelay), mutexNcurses(m), conditionVariable(c), mutexCondition(m2)  {
 }
 
 TetrisWindow::~TetrisWindow() = default;
@@ -24,30 +23,29 @@ void TetrisWindow::run() {
 
 
     while (true) {
-        if (stepDelay == 50000)
-            std::cout << "siemna" << std::endl;
-        else
-            std::cout << "elo" << std::endl;
         fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
 
-        std::unique_lock<std::mutex> uniqueLock(mutex);
+        std::unique_lock<std::mutex> uniqueLock(mutexNcurses);
         drawFigure();
         uniqueLock.unlock();
         blockFalls = true;
         while (blockFalls) {
-            uniqueLock.lock();
             usleep(stepDelay);
+            uniqueLock.lock();
             blockFalls = doOneStep();
             drawFigure();
             refresh();
             uniqueLock.unlock();
         }
 
+        std::unique_lock<std::mutex> locker(mutexCondition);
         blocks.push(fallingBlock);
+        locker.unlock();
+        conditionVariable.notify_all();
+
         uniqueLock.lock();
         clearFigure();
         uniqueLock.unlock();
-        //conditionVariable.notify_all();
 
         int tmp = getch();
         if (tmp == KEY_UP)
