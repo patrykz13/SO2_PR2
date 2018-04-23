@@ -78,7 +78,7 @@ std::vector<BlockSegment> &Block::getBlockParts() {
 void
 Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo) {
     blockParts.clear();
-    int shiftWidth = (rand() % areaWidthTo) + areaWidthFrom, shiftHeight = (rand() % areaHeightTo) + areaHeightFrom;
+    int shiftWidth = areaWidthFrom + rand() % (( areaWidthTo + 1 ) - areaWidthFrom), shiftHeight = areaHeightFrom + rand() % (( areaHeightTo + 1 ) - areaHeightFrom);
 
     switch (blockType) {
         case 0:
@@ -99,7 +99,7 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(1 + shiftWidth, 2 + shiftHeight);
-            blockParts.emplace_back(1 + shiftWidth, 2 + shiftHeight);
+            blockParts.emplace_back(2 + shiftWidth, 2 + shiftHeight);
             break;
 
         case 3:
