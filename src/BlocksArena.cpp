@@ -48,8 +48,6 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     interceptingWindowThread_1.join();
     interceptingWindowThread_2.join();
     interceptingWindowThread_3.join();
-
-
 }
 
 BlocksArena::~BlocksArena() = default;

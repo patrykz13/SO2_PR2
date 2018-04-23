@@ -74,11 +74,14 @@ void Block::initBlockParts(int blockType, int shift) {
 void
 Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, int areaHeightFrom, int areaHeightTo) {
     blockParts.clear();
-    int shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 4) - areaWidthFrom);
-    int shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 3) - areaHeightFrom);
+    int shiftWidth;
+    int shiftHeight;
 
     switch (blockType) {
         case 0:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 4) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 1) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(3 + shiftWidth, 1 + shiftHeight);
@@ -86,6 +89,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 1:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 3) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 2) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(3 + shiftWidth, 1 + shiftHeight);
@@ -93,6 +99,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 2:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 2) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 2) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(1 + shiftWidth, 2 + shiftHeight);
@@ -100,6 +109,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 3:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 3) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 3) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(1 + shiftWidth, 2 + shiftHeight);
             blockParts.emplace_back(1 + shiftWidth, 3 + shiftHeight);
@@ -107,6 +119,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 4:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 2) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 3) - areaHeightFrom);
+
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 2 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 3 + shiftHeight);
@@ -114,6 +129,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 5:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 3) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 2) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 2 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 2 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
@@ -121,6 +139,9 @@ Block::setBlockPartsForInterceptingWindow(int areaWidthFrom, int areaWidthTo, in
             break;
 
         case 6:
+            shiftWidth = areaWidthFrom + rand() % ((areaWidthTo - 3) - areaWidthFrom);
+            shiftHeight = areaHeightFrom + rand() % ((areaHeightTo - 2) - areaHeightFrom);
+
             blockParts.emplace_back(1 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 1 + shiftHeight);
             blockParts.emplace_back(2 + shiftWidth, 2 + shiftHeight);
