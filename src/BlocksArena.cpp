@@ -28,7 +28,7 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
                              stepDelay));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_1(
-            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2) + 1, xTo - 1,
+            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2), xTo - 1,
                                    yTo / 2, yTo - 1));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_2(
@@ -36,8 +36,8 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
                                    yTo - 1));
 
     std::shared_ptr<InterceptingWindow> interceptingWindow_3(
-            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2) + 1, xTo - 1, yFrom,
-                                   yTo / 2));
+            new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2), xTo - 1,
+                                   yFrom, yTo / 2));
 
     std::thread tetrisWindowThread = tetrisWindow->startThread();
     std::thread interceptingWindowThread_1 = interceptingWindow_1->startThread();
