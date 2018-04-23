@@ -9,6 +9,7 @@
 
 std::mutex TetrisWindow::mutex;
 std::condition_variable TetrisWindow::conditionVariable;
+
 TetrisWindow::TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                            int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
                                                                        areaWidthTo(areaWidthTo),
@@ -22,23 +23,32 @@ TetrisWindow::~TetrisWindow() = default;
 void TetrisWindow::run() {
     bool blockFalls;
 
-    while(true){
+
+    while (true) {
+        if (stepDelay == 50000)
+            std::cout << "siemna" << std::endl;
+        else
+            std::cout << "elo" << std::endl;
         fallingBlock.initBlockParts(rand() % 6, rand() % (areaWidthTo - 4));
 
         std::unique_lock<std::mutex> uniqueLock(mutex);
         drawFigure();
+        uniqueLock.unlock();
         blockFalls = true;
-        while (blockFalls){
+        while (blockFalls) {
+            uniqueLock.lock();
             usleep(stepDelay);
             blockFalls = doOneStep();
             drawFigure();
             refresh();
+            uniqueLock.unlock();
         }
 
         blocks.push(fallingBlock);
+        uniqueLock.lock();
         clearFigure();
         uniqueLock.unlock();
-        conditionVariable.notify_all();
+        //conditionVariable.notify_all();
 
         int tmp = getch();
         if (tmp == KEY_UP)
@@ -47,10 +57,10 @@ void TetrisWindow::run() {
 }
 
 std::thread TetrisWindow::startThread() {
-    std::thread t1(&TetrisWindow::run, this);
-    t1.join();
-    return t1;
-   // return std::thread(&TetrisWindow::start, this);
+    return std::thread(&TetrisWindow::run, this);
+    // t1.join();
+
+    // return std::thread(&TetrisWindow::start, this);
 }
 
 bool TetrisWindow::doOneStep() {

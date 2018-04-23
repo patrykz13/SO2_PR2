@@ -6,7 +6,7 @@
 #include "InterceptingWindow.h"
 
 std::mutex InterceptingWindow::mutex;
-std::condition_variable InterceptingWindow::condition_variable;
+
 
 std::thread InterceptingWindow::startThread() {
     std::thread t1(&InterceptingWindow::run, this);
@@ -15,12 +15,13 @@ std::thread InterceptingWindow::startThread() {
 }
 
 void InterceptingWindow::run() {
-    std::unique_lock<std::mutex> uniqueLock(mutex);
-    condition_variable.wait(uniqueLock, [&]{return !blocks.empty();});
-    Block b = blocks.back();
-    blocks.pop();
-    drawFigure(b);
-    uniqueLock.unlock();
+    //std::unique_lock<std::mutex> uniqueLock(mutex);
+   // condition_variable.wait(uniqueLock, [&]{return !blocks.empty();});
+    //Block b = blocks.back();
+   // blocks.pop();
+    while (true){
+    drawFigure();}
+    //uniqueLock.unlock();
 
 }
 
@@ -32,8 +33,11 @@ InterceptingWindow::InterceptingWindow(std::queue<Block> &blocks,int windowNumbe
 
 }
 
-void InterceptingWindow::drawFigure(Block b) {
-    mvaddch(50, 50, 'x');
+void InterceptingWindow::drawFigure() {
+    mvaddch(28, 50, 'x');
+    mvaddch(21, 5, 'x');
+    mvaddch(11, 61, 'x');
+    mvaddch(15, 54, 'x');
     refresh();
 }
 

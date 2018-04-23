@@ -7,11 +7,13 @@
 
 #include <queue>
 #include <thread>
+#include <condition_variable>
 #include "Block.h"
 
 
 class BlocksArena {
     std::queue<Block> blocks;
+    const std::condition_variable conditionVariable;
 
     std::vector<std::thread> threadsWindows;
 

@@ -18,19 +18,24 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    TetrisWindow tetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
-    InterceptingWindow t1(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
-    InterceptingWindow t2(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
-    InterceptingWindow t3(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+
+    std::shared_ptr<TetrisWindow> tetrisWindow(new TetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, 50000));
+    std::shared_ptr<TetrisWindow> tetrisWindow2(new TetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, 1000000));
+
+    //TetrisWindow tetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
+   // TetrisWindow tetrisWindow2(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
+   // InterceptingWindow t1( blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+    //InterceptingWindow t2(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
+    //InterceptingWindow t3(blocks,1, xFrom, xTo / 2, yFrom, yTo / 2);
 
 
-
-
-
-    tetrisWindow.startThread();
-    t1.startThread();
-    t2.startThread();
-    t3.startThread();
+    std::thread th1 = tetrisWindow->startThread();
+    std::thread th2 = tetrisWindow2->startThread();
+    th1.join();
+    th2.join();
+   // t1.startThread();
+    //t2.startThread();
+   // t3.startThread();
 
 }
 
