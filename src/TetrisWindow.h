@@ -15,11 +15,10 @@
 #include "Block.h"
 #include "Window.h"
 
-
 class TetrisWindow: public IWindow {
 private:
-    std::mutex mutex;
-    std::condition_variable condition_variable;
+    static std::mutex mutex;
+    std::condition_variable conditionVariable;
 
     std::queue<Block> blocks;
     Block fallingBlock;

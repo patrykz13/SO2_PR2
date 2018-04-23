@@ -6,9 +6,10 @@
 #define SO2_PR2_INTERCEPTINGWINDOW_H
 
 
-#include "Window.h"
 #include "Block.h"
+#include "Window.h"
 #include <queue>
+#include <thread>
 
 class InterceptingWindow: public IWindow {
 

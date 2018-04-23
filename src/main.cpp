@@ -16,7 +16,7 @@ int main() {
 
     int maxHeight = 0, maxWidth = 0;
     getmaxyx(stdscr, maxHeight, maxWidth);
-    BlocksArena(0, maxWidth, 0, maxHeight, 500000);
+    BlocksArena blocksArena(0, maxWidth, 0, maxHeight, 500000);
 
     nodelay(stdscr, false);
     getch();

@@ -18,24 +18,14 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     refresh();
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    IWindow tetrisWindow = TetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
-    IWindow firstInterceptingWindow = InterceptingWindow(blocks,1,xTo / 2, xTo - 1, yFrom, yTo / 2);
-    IWindow secondInterceptingWindow = InterceptingWindow(blocks,2,xFrom, xTo / 2, yTo / 2, yTo - 1);
-    IWindow thirdInterceptingWindow = InterceptingWindow(blocks,3,xTo / 2, xTo - 1, yTo / 2, yTo - 1);
+    TetrisWindow tetrisWindow(blocks, xFrom, xTo / 2, yFrom, yTo / 2, stepDelay);
 
 
-    windows.push_back(tetrisWindow);
-    windows.push_back(firstInterceptingWindow);
-    windows.push_back(secondInterceptingWindow);
-    windows.push_back(thirdInterceptingWindow);
 
 
-    for (auto &window : windows)
-        threadsWindows.push_back(window.startThread());
 
-    for (auto &windowThread : threadsWindows)
-        windowThread.join();
 
+    tetrisWindow.startThread();
 }
 
 BlocksArena::~BlocksArena() = default;

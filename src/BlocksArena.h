@@ -6,12 +6,13 @@
 #define SO2_PR2_BLOCKSARENA_H
 
 #include <queue>
+#include <thread>
 #include "Block.h"
-#include "Window.h"
+
 
 class BlocksArena {
     std::queue<Block> blocks;
-    std::vector<IWindow> windows;
+
     std::vector<std::thread> threadsWindows;
 
     void drawDividedScreen(int yFrom, int yTo, int xFrom, int xTo);

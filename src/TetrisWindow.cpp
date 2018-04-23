@@ -7,6 +7,7 @@
 #include "TetrisWindow.h"
 #include "Block.h"
 
+std::mutex TetrisWindow::mutex;
 
 TetrisWindow::TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int areaWidthTo, int areaHeightFrom,
                            int areaHeightTo, __useconds_t stepDelay) : blocks(blocks), areaWidthFrom(areaWidthFrom),
@@ -14,7 +15,6 @@ TetrisWindow::TetrisWindow(std::queue<Block> &blocks, int areaWidthFrom, int are
                                                                        areaHeightFrom(areaHeightFrom),
                                                                        areaHeightTo(areaHeightTo),
                                                                        stepDelay(stepDelay) {
-    run();
 }
 
 TetrisWindow::~TetrisWindow() = default;
@@ -38,7 +38,7 @@ void TetrisWindow::run() {
         blocks.push(fallingBlock);
         clearFigure();
         uniqueLock.unlock();
-        condition_variable.notify_all();
+        conditionVariable.notify_all();
 
         int tmp = getch();
         if (tmp == KEY_UP)
@@ -47,7 +47,10 @@ void TetrisWindow::run() {
 }
 
 std::thread TetrisWindow::startThread() {
-    return std::thread(&TetrisWindow::run, this);
+    std::thread t1(&TetrisWindow::run, this);
+    t1.join();
+    return t1;
+   // return std::thread(&TetrisWindow::start, this);
 }
 
 bool TetrisWindow::doOneStep() {
