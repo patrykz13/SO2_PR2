@@ -22,7 +22,7 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
     std::mutex mutexCondition;
     std::condition_variable c;
 
-    std::shared_ptr<TetrisWindow> tetrisWindow(new TetrisWindow(mutexNcurses, mutexCondition, c, blocks, xFrom, xTo / 2, yFrom, yTo / 2, 50000));
+    std::shared_ptr<TetrisWindow> tetrisWindow(new TetrisWindow(mutexNcurses, mutexCondition, c, blocks, xFrom, xTo / 2, yFrom, yTo / 2, 500000));
     std::shared_ptr<InterceptingWindow> t1(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xTo / 2, xTo - 1, yTo / 2, yTo - 1));
     std::shared_ptr<InterceptingWindow> t2(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xFrom, xTo / 2, yTo / 2, yTo - 1));
     std::shared_ptr<InterceptingWindow> t3(new InterceptingWindow(mutexNcurses, mutexCondition, c, blocks, xTo / 2, xTo - 1, yFrom, yTo / 2));

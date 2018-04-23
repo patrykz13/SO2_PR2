@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <iostream>
 #include "InterceptingWindow.h"
+#include <cassert>
 
 
 std::thread InterceptingWindow::startThread() {
@@ -12,21 +13,25 @@ std::thread InterceptingWindow::startThread() {
 
 void InterceptingWindow::run() {
     while (true) {
-
         std::unique_lock<std::mutex> locker(mutexCondition);
-        condition_variable.wait(locker, [&]{return !blocks.empty();});
+        condition_variable.wait(locker,[this]{return !blocks.empty(); });
+        assert(!blocks.empty());
         Block b = blocks.back();
         blocks.pop();
         locker.unlock();
-
         b.setBlockPartsForInterceptingWindow(areaWidthFrom, areaWidthTo, areaHeightFrom, areaHeightTo);
         std::unique_lock<std::mutex> uniqueLock(mutexNcurses);
         drawFigure(b);
         uniqueLock.unlock();
 
-        int tmp = getch();
-        if (tmp == KEY_UP)
-            break;
+        //condition_variable.wait(locker);
+
+
+
+
+       // int tmp = getch();
+       // if (tmp == KEY_UP)
+         //   break;
     }
 }
 
