@@ -39,7 +39,6 @@ BlocksArena::BlocksArena(int xFrom, int xTo, int yFrom, int yTo, __useconds_t st
             new InterceptingWindow(ncursesMutex, conditionVarMutex, conditionVariable, blocks, (xTo / 2) + 1, xTo - 1, yFrom,
                                    yTo / 2));
 
-
     std::thread tetrisWindowThread = tetrisWindow->startThread();
     std::thread interceptingWindowThread_1 = interceptingWindow_1->startThread();
     std::thread interceptingWindowThread_2 = interceptingWindow_2->startThread();
