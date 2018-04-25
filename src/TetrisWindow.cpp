@@ -44,7 +44,7 @@ void TetrisWindow::run() {
 
         std::unique_lock<std::mutex> locker(conditionVarMutex);
         blocks.push(fallingBlock);
-        conditionVariable.notify_all();
+        conditionVariable.notify_one();
         locker.unlock();
 
         uniqueLock.lock();
